@@ -1,0 +1,36 @@
+{
+    "name": "simpod/doctrine-utcdatetime",
+    "description": "Doctrine UTC DateTime",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Simon Podlipsky",
+            "email": "simon@podlipsky.net"
+        }
+    ],
+    "config": {
+        "sort-packages": true
+    },
+    "require": {
+        "php": "^7.2",
+        "doctrine/dbal": "2.*"
+    },
+    "require-dev": {
+        "doctrine/coding-standard": "^5.0",
+        "phpstan/phpstan": "^0.10.7",
+        "phpstan/phpstan-phpunit": "^0.10.0",
+        "phpstan/phpstan-strict-rules": "^0.10.1",
+        "phpunit/phpunit": "^7.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "SimPod\\DoctrineUtcDateTime\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SimPod\\DoctrineUtcDateTime\\Tests\\": "tests/"
+        }
+    }
+}
