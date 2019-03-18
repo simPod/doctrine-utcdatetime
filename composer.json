@@ -17,7 +17,7 @@
         "doctrine/dbal": "2.*"
     },
     "require-dev": {
-        "doctrine/coding-standard": "^5.0",
+        "doctrine/coding-standard": "^5.0 || ^6.0",
         "phpstan/phpstan": "^0.10.7",
         "phpstan/phpstan-phpunit": "^0.10.0",
         "phpstan/phpstan-strict-rules": "^0.10.1",
