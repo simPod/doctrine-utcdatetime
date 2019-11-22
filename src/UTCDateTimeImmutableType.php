@@ -66,4 +66,10 @@ class UTCDateTimeImmutableType extends DateTimeImmutableType
 
         return self::$utc;
     }
+
+    /** {@inheritdoc} */
+    public function requiresSQLCommentHint(AbstractPlatform $platform) : bool
+    {
+        return true;
+    }
 }
