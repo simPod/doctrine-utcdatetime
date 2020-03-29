@@ -10,8 +10,10 @@ use DateTimeZone;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\DateTimeImmutableType;
+use InvalidArgumentException;
+use function is_string;
 
-class UTCDateTimeImmutableType extends DateTimeImmutableType
+final class UTCDateTimeImmutableType extends DateTimeImmutableType
 {
     /** @var DateTimeZone|null */
     private static $utc;
@@ -26,7 +28,7 @@ class UTCDateTimeImmutableType extends DateTimeImmutableType
         }
 
         if ($value instanceof DateTimeImmutable) {
-            $value = $value->setTimezone(self::getUtc());
+            $value = $value->setTimezone(self::utc());
         }
 
         return parent::convertToDatabaseValue($value, $platform);
@@ -41,10 +43,14 @@ class UTCDateTimeImmutableType extends DateTimeImmutableType
             return $value;
         }
 
+        if (! is_string($value)) {
+            throw new InvalidArgumentException();
+        }
+
         $converted = DateTimeImmutable::createFromFormat(
             $platform->getDateTimeFormatString(),
             $value,
-            self::getUtc()
+            self::utc()
         );
 
         if ($converted === false) {
@@ -58,7 +64,7 @@ class UTCDateTimeImmutableType extends DateTimeImmutableType
         return $converted;
     }
 
-    public static function getUtc() : DateTimeZone
+    private static function utc() : DateTimeZone
     {
         if (self::$utc === null) {
             self::$utc = new DateTimeZone('UTC');
