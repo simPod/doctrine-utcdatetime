@@ -4,8 +4,6 @@
 [![Coverage Status](https://coveralls.io/repos/github/simPod/doctrine-utcdatetime/badge.svg?branch=master)](https://coveralls.io/github/simPod/doctrine-utcdatetime?branch=master)
 [![Downloads](https://poser.pugx.org/simpod/doctrine-utcdatetime/d/total.svg)](https://packagist.org/packages/simpod/doctrine-utcdatetime)
 [![Packagist](https://poser.pugx.org/simpod/doctrine-utcdatetime/v/stable.svg)](https://packagist.org/packages/simpod/doctrine-utcdatetime)
-[![Licence](https://poser.pugx.org/simpod/doctrine-utcdatetime/license.svg)](https://packagist.org/packages/simpod/doctrine-utcdatetime)
-[![GitHub Issues](https://img.shields.io/github/issues/simPod/doctrine-utcdatetime.svg?style=flat-square)](https://github.com/simPod/doctrine-utcdatetime/issues)
 [![Type Coverage](https://shepherd.dev/github/simPod/doctrine-utcdatetime/coverage.svg)](https://shepherd.dev/github/simPod/doctrine-utcdatetime)
 
 Contains DateTime and DateTimeImmutable Doctrine DBAL types that store datetimes in UTC timezone.
