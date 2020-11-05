@@ -11,6 +11,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\DateTimeImmutableType;
 use InvalidArgumentException;
+
 use function is_string;
 
 final class UTCDateTimeImmutableType extends DateTimeImmutableType
@@ -64,7 +65,7 @@ final class UTCDateTimeImmutableType extends DateTimeImmutableType
         return $converted;
     }
 
-    private static function utc() : DateTimeZone
+    private static function utc(): DateTimeZone
     {
         if (self::$utc === null) {
             self::$utc = new DateTimeZone('UTC');
@@ -74,7 +75,7 @@ final class UTCDateTimeImmutableType extends DateTimeImmutableType
     }
 
     /** {@inheritdoc} */
-    public function requiresSQLCommentHint(AbstractPlatform $platform) : bool
+    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;
     }
