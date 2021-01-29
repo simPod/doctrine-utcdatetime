@@ -6,7 +6,9 @@
 [![Packagist](https://poser.pugx.org/simpod/doctrine-utcdatetime/v/stable.svg)](https://packagist.org/packages/simpod/doctrine-utcdatetime)
 [![Type Coverage](https://shepherd.dev/github/simPod/doctrine-utcdatetime/coverage.svg)](https://shepherd.dev/github/simPod/doctrine-utcdatetime)
 
-Contains DateTime and DateTimeImmutable Doctrine DBAL types that store datetimes in UTC timezone.
+Contains DateTime and DateTimeImmutable Doctrine DBAL types that store datetimes in UTC timezone (`TIMESTAMP` type in postgres).
+
+For more detailed explanation see [this comment](https://github.com/simPod/doctrine-utcdatetime/issues/6#issuecomment-722343092).
 
 For more info about usage in Doctrine ORM see [Doctrine documentation](https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/cookbook/working-with-datetime.html). The code is mostly copied from there.
 
