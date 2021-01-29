@@ -16,8 +16,7 @@ use function is_string;
 
 final class UTCDateTimeImmutableType extends DateTimeImmutableType
 {
-    /** @var DateTimeZone|null */
-    private static $utc;
+    private static ?DateTimeZone $utc = null;
 
     /**
      * {@inheritdoc}

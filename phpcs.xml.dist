@@ -11,7 +11,5 @@
 
     <file>src</file>
 
-    <rule ref="Doctrine">
-        <exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint" />
-    </rule>
+    <rule ref="Doctrine" />
 </ruleset>
