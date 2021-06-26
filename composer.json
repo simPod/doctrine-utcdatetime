@@ -14,7 +14,7 @@
     },
     "require": {
         "php": "^7.4 || ^8.0",
-        "doctrine/dbal": "2.*"
+        "doctrine/dbal": "3.*"
     },
     "require-dev": {
         "doctrine/coding-standard": "^9.0",
