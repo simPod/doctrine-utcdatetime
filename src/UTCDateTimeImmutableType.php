@@ -21,7 +21,7 @@ final class UTCDateTimeImmutableType extends DateTimeImmutableType
     /**
      * {@inheritdoc}
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {
         if ($value === null) {
             return null;
@@ -37,7 +37,7 @@ final class UTCDateTimeImmutableType extends DateTimeImmutableType
     /**
      * {@inheritdoc}
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): DateTimeInterface|null
     {
         if ($value === null || $value instanceof DateTimeInterface) {
             return $value;
