@@ -1,0 +1,30 @@
+name: "Coding Standards"
+
+on:
+  pull_request:
+  push:
+    branches:
+      - "master"
+
+jobs:
+  coding-standards:
+    name: "Coding Standards"
+    runs-on: "ubuntu-20.04"
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v2"
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "8.0"
+          coverage: "none"
+          extensions: "json, mbstring"
+          tools: "cs2pr"
+
+      - name: "Install dependencies with Composer"
+        uses: "ramsey/composer-install@v1"
+
+      - name: "Run PHP_CodeSniffer"
+        run: "vendor/bin/phpcs -q --no-colors --report=checkstyle | cs2pr"

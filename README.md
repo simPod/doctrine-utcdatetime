@@ -1,10 +1,28 @@
 # Doctrine UTCDateTimeType
 
-[![Build Status](https://github.com/simPod/doctrine-utcdatetime/workflows/CI/badge.svg?branch=master)](https://github.com/simPod/doctrine-utcdatetime/actions)
-[![Coverage Status](https://coveralls.io/repos/github/simPod/doctrine-utcdatetime/badge.svg?branch=master)](https://coveralls.io/github/simPod/doctrine-utcdatetime?branch=master)
-[![Downloads](https://poser.pugx.org/simpod/doctrine-utcdatetime/d/total.svg)](https://packagist.org/packages/simpod/doctrine-utcdatetime)
-[![Packagist](https://poser.pugx.org/simpod/doctrine-utcdatetime/v/stable.svg)](https://packagist.org/packages/simpod/doctrine-utcdatetime)
-[![Type Coverage](https://shepherd.dev/github/simPod/doctrine-utcdatetime/coverage.svg)](https://shepherd.dev/github/simPod/doctrine-utcdatetime)
+[![GitHub Actions][GA Image]][GA Link]
+[![Shepherd Type][Shepherd Image]][Shepherd Link]
+[![Code Coverage][Coverage Image]][CodeCov Link]
+[![Downloads][Downloads Image]][Packagist Link]
+[![Packagist][Packagist Image]][Packagist Link]
+
+[GA Image]: https://github.com/simPod/doctrine-utcdatetime/workflows/CI/badge.svg
+
+[GA Link]: https://github.com/simPod/doctrine-utcdatetime/actions?query=workflow%3A%22CI%22+branch%3Amaster
+
+[Shepherd Image]: https://shepherd.dev/github/simPod/doctrine-utcdatetime/coverage.svg
+
+[Shepherd Link]: https://shepherd.dev/github/simPod/doctrine-utcdatetime
+
+[Coverage Image]: https://codecov.io/gh/simPod/doctrine-utcdatetime/branch/master/graph/badge.svg
+
+[CodeCov Link]: https://codecov.io/gh/simPod/doctrine-utcdatetime/branch/master
+
+[Downloads Image]: https://poser.pugx.org/simPod/doctrine-utcdatetime/d/total.svg
+
+[Packagist Image]: https://poser.pugx.org/simPod/doctrine-utcdatetime/v/stable.svg
+
+[Packagist Link]: https://packagist.org/packages/simPod/doctrine-utcdatetime
 
 Contains DateTime and DateTimeImmutable Doctrine DBAL types that store datetimes in UTC timezone (`TIMESTAMP` type in postgres).
 
