@@ -68,4 +68,36 @@ abstract class DateTimeTypeTestCaseBase extends TestCase
     {
         yield 'int' => [1];
     }
+
+    /** @dataProvider providerConvertToPHPValueSupportsMicroseconds */
+    public function testConvertToPHPValueSupportsMicroseconds(DateTimeInterface $expected, string $dbValue): void
+    {
+        $type = $this->type();
+
+        $platform = new class extends PostgreSQL100Platform {
+            public function getDateTimeFormatString(): string
+            {
+                return 'Y-m-d H:i:s.u';
+            }
+        };
+
+        $phpValue = $type->convertToPHPValue($dbValue, $platform);
+        assert($phpValue === null || $phpValue instanceof DateTimeInterface);
+
+        self::assertNotNull($phpValue);
+        self::assertSame(
+            $expected->format('Y-m-d\TH:i:s.uP'),
+            $phpValue->format('Y-m-d\TH:i:s.uP')
+        );
+    }
+
+    /**
+     * @return Generator<string, array{DateTimeInterface, string}>
+     */
+    public function providerConvertToPHPValueSupportsMicroseconds(): Generator
+    {
+        yield 'timestamp(0)' => [new DateTimeImmutable('2021-12-01 12:34:56.0'), '2021-12-01 12:34:56'];
+        yield 'timestamp(3)' => [new DateTimeImmutable('2021-12-01 12:34:56.123'), '2021-12-01 12:34:56.123'];
+        yield 'timestamp(6)' => [new DateTimeImmutable('2021-12-01 12:34:56.123456'), '2021-12-01 12:34:56.123456'];
+    }
 }

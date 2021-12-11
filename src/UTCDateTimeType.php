@@ -12,6 +12,7 @@ use Doctrine\DBAL\Types\DateTimeType;
 use InvalidArgumentException;
 
 use function is_string;
+use function str_contains;
 
 final class UTCDateTimeType extends DateTimeType
 {
@@ -46,8 +47,14 @@ final class UTCDateTimeType extends DateTimeType
             throw new InvalidArgumentException();
         }
 
+        $format = $platform->getDateTimeFormatString();
+
+        if ($format === 'Y-m-d H:i:s.u' && ! str_contains($value, '.')) {
+            $value .= '.0';
+        }
+
         $converted = DateTime::createFromFormat(
-            $platform->getDateTimeFormatString(),
+            $format,
             $value,
             self::utc()
         );
@@ -56,7 +63,7 @@ final class UTCDateTimeType extends DateTimeType
             throw ConversionException::conversionFailedFormat(
                 $value,
                 $this->getName(),
-                $platform->getDateTimeFormatString()
+                $format
             );
         }
 
