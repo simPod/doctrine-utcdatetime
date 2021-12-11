@@ -22,7 +22,6 @@
         "phpstan/phpstan-phpunit": "^0.12.16",
         "phpstan/phpstan-strict-rules": "^0.12.5",
         "phpunit/phpunit": "^9.5",
-        "simpod/php-coveralls-mirror": "^3.0",
         "vimeo/psalm": "^4.1"
     },
     "autoload": {
