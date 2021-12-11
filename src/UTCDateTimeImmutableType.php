@@ -13,6 +13,7 @@ use Doctrine\DBAL\Types\DateTimeImmutableType;
 use InvalidArgumentException;
 
 use function is_string;
+use function str_contains;
 
 final class UTCDateTimeImmutableType extends DateTimeImmutableType
 {
@@ -47,8 +48,14 @@ final class UTCDateTimeImmutableType extends DateTimeImmutableType
             throw new InvalidArgumentException();
         }
 
+        $format = $platform->getDateTimeFormatString();
+
+        if ($format === 'Y-m-d H:i:s.u' && ! str_contains($value, '.')) {
+            $value .= '.0';
+        }
+
         $converted = DateTimeImmutable::createFromFormat(
-            $platform->getDateTimeFormatString(),
+            $format,
             $value,
             self::utc()
         );
@@ -57,7 +64,7 @@ final class UTCDateTimeImmutableType extends DateTimeImmutableType
             throw ConversionException::conversionFailedFormat(
                 $value,
                 $this->getName(),
-                $platform->getDateTimeFormatString()
+                $format
             );
         }
 
