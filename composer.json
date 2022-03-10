@@ -19,7 +19,7 @@
     "require-dev": {
         "doctrine/coding-standard": "^9.0",
         "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan": "^0.12.53",
+        "phpstan/phpstan": "^1.0.0",
         "phpstan/phpstan-phpunit": "^0.12.16",
         "phpstan/phpstan-strict-rules": "^0.12.5",
         "phpunit/phpunit": "^9.5",
