@@ -17,7 +17,7 @@ use function str_contains;
 
 final class UTCDateTimeImmutableType extends DateTimeImmutableType
 {
-    private static ?DateTimeZone $utc = null;
+    private static DateTimeZone|null $utc = null;
 
     /**
      * {@inheritdoc}
@@ -57,14 +57,14 @@ final class UTCDateTimeImmutableType extends DateTimeImmutableType
         $converted = DateTimeImmutable::createFromFormat(
             $format,
             $value,
-            self::utc()
+            self::utc(),
         );
 
         if ($converted === false) {
             throw ConversionException::conversionFailedFormat(
                 $value,
                 $this->getName(),
-                $format
+                $format,
             );
         }
 

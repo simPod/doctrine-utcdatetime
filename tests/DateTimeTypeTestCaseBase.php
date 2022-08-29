@@ -23,7 +23,7 @@ abstract class DateTimeTypeTestCaseBase extends TestCase
     /** @dataProvider providerConvertToPHPValue */
     public function testConvertToPHPValue(
         DateTimeInterface|null $expected,
-        DateTimeInterface|string|null $dbValue
+        DateTimeInterface|string|null $dbValue,
     ): void {
         $type = $this->type();
 
@@ -35,7 +35,7 @@ abstract class DateTimeTypeTestCaseBase extends TestCase
 
         self::assertSame(
             $expected?->format('Y-m-d\TH:i:s.uP'),
-            $phpValue?->format('Y-m-d\TH:i:s.uP')
+            $phpValue?->format('Y-m-d\TH:i:s.uP'),
         );
     }
 
@@ -51,7 +51,7 @@ abstract class DateTimeTypeTestCaseBase extends TestCase
 
     /** @dataProvider providerConvertToPHPValueFailsWithInvalidType */
     public function testConvertToPHPValueFailsWithInvalidType(
-        mixed $dbValue
+        mixed $dbValue,
     ): void {
         $type = $this->type();
 
@@ -87,13 +87,11 @@ abstract class DateTimeTypeTestCaseBase extends TestCase
         self::assertNotNull($phpValue);
         self::assertSame(
             $expected->format('Y-m-d\TH:i:s.uP'),
-            $phpValue->format('Y-m-d\TH:i:s.uP')
+            $phpValue->format('Y-m-d\TH:i:s.uP'),
         );
     }
 
-    /**
-     * @return Generator<string, array{DateTimeInterface, string}>
-     */
+    /** @return Generator<string, array{DateTimeInterface, string}> */
     public function providerConvertToPHPValueSupportsMicroseconds(): Generator
     {
         yield 'timestamp(0)' => [new DateTimeImmutable('2021-12-01 12:34:56.0'), '2021-12-01 12:34:56'];
