@@ -16,7 +16,7 @@ use function str_contains;
 
 final class UTCDateTimeType extends DateTimeType
 {
-    private static ?DateTimeZone $utc = null;
+    private static DateTimeZone|null $utc = null;
 
     /**
      * {@inheritdoc}
@@ -56,14 +56,14 @@ final class UTCDateTimeType extends DateTimeType
         $converted = DateTime::createFromFormat(
             $format,
             $value,
-            self::utc()
+            self::utc(),
         );
 
         if ($converted === false) {
             throw ConversionException::conversionFailedFormat(
                 $value,
                 $this->getName(),
-                $format
+                $format,
             );
         }
 
