@@ -1,0 +1,6 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Method SimPod\\\\DoctrineUtcDateTime\\\\UTCDateTimeImmutableType\\:\\:convertToPHPValue\\(\\) should return DateTimeImmutable\\|null but returns \\(DateTimeInterface&T\\)\\|\\(T&null\\)\\.$#"
+			count: 1
+			path: src/UTCDateTimeImmutableType.php
