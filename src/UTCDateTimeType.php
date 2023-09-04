@@ -19,7 +19,7 @@ final class UTCDateTimeType extends DateTimeType
     private static DateTimeZone|null $utc = null;
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {
@@ -35,7 +35,7 @@ final class UTCDateTimeType extends DateTimeType
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function convertToPHPValue($value, AbstractPlatform $platform): DateTime|null
     {
@@ -79,7 +79,7 @@ final class UTCDateTimeType extends DateTimeType
         return self::$utc;
     }
 
-    /** {@inheritdoc} */
+    /** {@inheritDoc} */
     public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;
