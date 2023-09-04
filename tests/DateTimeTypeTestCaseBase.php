@@ -14,8 +14,6 @@ use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use SimPod\DoctrineUtcDateTime\UTCDateTimeType;
 
-use function assert;
-
 abstract class DateTimeTypeTestCaseBase extends TestCase
 {
     abstract protected function type(): DateTimeType;
@@ -31,7 +29,6 @@ abstract class DateTimeTypeTestCaseBase extends TestCase
         };
 
         $phpValue = $type->convertToPHPValue($dbValue, $platform);
-        assert($phpValue === null || $phpValue instanceof DateTimeInterface);
 
         self::assertSame(
             $expected?->format('Y-m-d\TH:i:s.uP'),
@@ -82,9 +79,7 @@ abstract class DateTimeTypeTestCaseBase extends TestCase
         };
 
         $phpValue = $type->convertToPHPValue($dbValue, $platform);
-        assert($phpValue === null || $phpValue instanceof DateTimeInterface);
 
-        self::assertNotNull($phpValue);
         self::assertSame(
             $expected->format('Y-m-d\TH:i:s.uP'),
             $phpValue->format('Y-m-d\TH:i:s.uP'),
