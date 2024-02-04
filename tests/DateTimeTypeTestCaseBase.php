@@ -66,34 +66,6 @@ abstract class DateTimeTypeTestCaseBase extends TestCase
         yield 'DateTime interface' => ['2000-10-31 06:30:00.000000', $dateTime];
     }
 
-    #[DataProvider('providerConvertToDatabaseValue')]
-    public function testConvertToDatabaseValue(
-        string|null $expected,
-        DateTimeInterface|string|null $dbValue,
-    ): void {
-        $type = static::type();
-
-        $platform = new class extends PostgreSQL100Platform {
-        };
-
-        $databaseValue = $type->convertToDatabaseValue($dbValue, $platform);
-
-        self::assertSame($expected, $databaseValue);
-    }
-
-    /** @return Generator<string, array{string|null, DateTimeInterface|string|null}> */
-    public static function providerConvertToDatabaseValue(): Generator
-    {
-        yield 'null' => [null, null];
-
-        $dateTimeValue = '2000-10-31T01:30:00.000-05:00';
-        $dateTime      = static::type() instanceof UTCDateTimeType
-            ? new DateTime($dateTimeValue)
-            : new DateTimeImmutable($dateTimeValue);
-
-        yield 'DateTime interface' => ['2000-10-31 06:30:00', $dateTime];
-    }
-
     #[DataProvider('providerConvertToPHPValue')]
     public function testConvertToPHPValue(
         DateTimeInterface|null $expected,
