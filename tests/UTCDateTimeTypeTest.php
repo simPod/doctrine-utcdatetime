@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace SimPod\DoctrineUtcDateTime\Tests;
 
 use Doctrine\DBAL\Types\DateTimeType;
+use PHPUnit\Framework\Attributes\CoversClass;
 use SimPod\DoctrineUtcDateTime\UTCDateTimeType;
 
+#[CoversClass(UTCDateTimeType::class)]
 final class UTCDateTimeTypeTest extends DateTimeTypeTestCaseBase
 {
-    protected function type(): DateTimeType
+    protected static function type(): DateTimeType
     {
         return new UTCDateTimeType();
     }
