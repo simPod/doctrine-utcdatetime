@@ -1,6 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Method SimPod\\\\DoctrineUtcDateTime\\\\UTCDateTimeImmutableType\\:\\:convertToPHPValue\\(\\) should return DateTimeImmutable\\|null but returns \\(DateTimeInterface&T\\)\\|\\(T&null\\)\\.$#"
+			message: "#^Method SimPod\\\\DoctrineUtcDateTime\\\\Tests\\\\DateTimeTypeTestCaseBase\\:\\:platform\\(\\) should return Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform but returns class@anonymous/tests/DateTimeTypeTestCaseBase\\.php\\:28\\|class@anonymous/tests/DateTimeTypeTestCaseBase\\.php\\:34\\.$#"
 			count: 1
-			path: src/UTCDateTimeImmutableType.php
+			path: tests/DateTimeTypeTestCaseBase.php
