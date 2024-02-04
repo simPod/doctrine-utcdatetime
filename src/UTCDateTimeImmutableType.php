@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace SimPod\DoctrineUtcDateTime;
 
 use DateTimeImmutable;
-use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\DateTimeImmutableType;
+use Doctrine\DBAL\Types\Exception\InvalidFormat;
 use InvalidArgumentException;
+use Throwable;
 
 use function is_string;
 use function str_contains;
@@ -22,7 +22,7 @@ final class UTCDateTimeImmutableType extends DateTimeImmutableType
     /**
      * {@inheritDoc}
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): string|null
     {
         if ($value === null) {
             return null;
@@ -38,9 +38,9 @@ final class UTCDateTimeImmutableType extends DateTimeImmutableType
     /**
      * {@inheritDoc}
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform): DateTimeInterface|null
+    public function convertToPHPValue($value, AbstractPlatform $platform): DateTimeImmutable|null
     {
-        if ($value === null || $value instanceof DateTimeInterface) {
+        if ($value === null || $value instanceof DateTimeImmutable) {
             return $value;
         }
 
@@ -54,21 +54,22 @@ final class UTCDateTimeImmutableType extends DateTimeImmutableType
             $value .= '.0';
         }
 
-        $converted = DateTimeImmutable::createFromFormat(
-            $format,
-            $value,
-            self::utc(),
-        );
+        $dateTime = DateTimeImmutable::createFromFormat($platform->getDateTimeFormatString(), $value);
 
-        if ($converted === false) {
-            throw ConversionException::conversionFailedFormat(
-                $value,
-                $this->getName(),
-                $format,
-            );
+        if ($dateTime !== false) {
+            return $dateTime;
         }
 
-        return $converted;
+        try {
+            return new DateTimeImmutable($value);
+        } catch (Throwable $e) {
+            throw InvalidFormat::new(
+                $value,
+                self::class,
+                $platform->getDateTimeFormatString(),
+                $e,
+            );
+        }
     }
 
     private static function utc(): DateTimeZone
@@ -78,11 +79,5 @@ final class UTCDateTimeImmutableType extends DateTimeImmutableType
         }
 
         return self::$utc;
-    }
-
-    /** {@inheritDoc} */
-    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
-    {
-        return true;
     }
 }

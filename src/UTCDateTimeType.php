@@ -7,9 +7,10 @@ namespace SimPod\DoctrineUtcDateTime;
 use DateTime;
 use DateTimeZone;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\DateTimeType;
+use Doctrine\DBAL\Types\Exception\InvalidFormat;
 use InvalidArgumentException;
+use Throwable;
 
 use function is_string;
 use function str_contains;
@@ -18,10 +19,8 @@ final class UTCDateTimeType extends DateTimeType
 {
     private static DateTimeZone|null $utc = null;
 
-    /**
-     * {@inheritDoc}
-     */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
+    /** {@inheritDoc} */
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): string|null
     {
         if ($value === null) {
             return null;
@@ -34,9 +33,7 @@ final class UTCDateTimeType extends DateTimeType
         return parent::convertToDatabaseValue($value, $platform);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public function convertToPHPValue($value, AbstractPlatform $platform): DateTime|null
     {
         if ($value === null || $value instanceof DateTime) {
@@ -53,21 +50,22 @@ final class UTCDateTimeType extends DateTimeType
             $value .= '.0';
         }
 
-        $converted = DateTime::createFromFormat(
-            $format,
-            $value,
-            self::utc(),
-        );
+        $dateTime = DateTime::createFromFormat($platform->getDateTimeFormatString(), $value);
 
-        if ($converted === false) {
-            throw ConversionException::conversionFailedFormat(
-                $value,
-                $this->getName(),
-                $format,
-            );
+        if ($dateTime !== false) {
+            return $dateTime;
         }
 
-        return $converted;
+        try {
+            return new DateTime($value);
+        } catch (Throwable $e) {
+            throw InvalidFormat::new(
+                $value,
+                self::class,
+                $platform->getDateTimeFormatString(),
+                $e,
+            );
+        }
     }
 
     private static function utc(): DateTimeZone
@@ -77,11 +75,5 @@ final class UTCDateTimeType extends DateTimeType
         }
 
         return self::$utc;
-    }
-
-    /** {@inheritDoc} */
-    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
-    {
-        return true;
     }
 }
