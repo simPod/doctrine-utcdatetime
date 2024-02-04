@@ -4,3 +4,4 @@
 /.phpunit.xml
 /.phpcs-cache
 /phpstan.neon
+.phpunit.result.cache
