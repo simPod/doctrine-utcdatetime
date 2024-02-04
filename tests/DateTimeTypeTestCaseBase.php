@@ -11,19 +11,20 @@ use Doctrine\DBAL\Platforms\PostgreSQL100Platform;
 use Doctrine\DBAL\Types\DateTimeType;
 use Generator;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SimPod\DoctrineUtcDateTime\UTCDateTimeType;
 
 abstract class DateTimeTypeTestCaseBase extends TestCase
 {
-    abstract protected function type(): DateTimeType;
+    abstract protected static function type(): DateTimeType;
 
-    /** @dataProvider providerConvertToPHPValue */
+    #[DataProvider('providerConvertToPHPValue')]
     public function testConvertToPHPValue(
         DateTimeInterface|null $expected,
         DateTimeInterface|string|null $dbValue,
     ): void {
-        $type = $this->type();
+        $type = static::type();
 
         $platform = new class extends PostgreSQL100Platform {
         };
@@ -37,20 +38,20 @@ abstract class DateTimeTypeTestCaseBase extends TestCase
     }
 
     /** @return Generator<string, array{DateTimeInterface|null, DateTimeInterface|string|null}> */
-    public function providerConvertToPHPValue(): Generator
+    public static function providerConvertToPHPValue(): Generator
     {
         yield 'null' => [null, null];
 
-        $now = $this->type() instanceof UTCDateTimeType ? new DateTime() : new DateTimeImmutable();
+        $now = static::type() instanceof UTCDateTimeType ? new DateTime() : new DateTimeImmutable();
 
         yield 'DateTime interface' => [$now, $now];
     }
 
-    /** @dataProvider providerConvertToPHPValueFailsWithInvalidType */
+    #[DataProvider('providerConvertToPHPValueFailsWithInvalidType')]
     public function testConvertToPHPValueFailsWithInvalidType(
         mixed $dbValue,
     ): void {
-        $type = $this->type();
+        $type = static::type();
 
         $platform = new class extends PostgreSQL100Platform {
         };
@@ -61,15 +62,15 @@ abstract class DateTimeTypeTestCaseBase extends TestCase
     }
 
     /** @return Generator<string, array{mixed}> */
-    public function providerConvertToPHPValueFailsWithInvalidType(): Generator
+    public static function providerConvertToPHPValueFailsWithInvalidType(): Generator
     {
         yield 'int' => [1];
     }
 
-    /** @dataProvider providerConvertToPHPValueSupportsMicroseconds */
+    #[DataProvider('providerConvertToPHPValueSupportsMicroseconds')]
     public function testConvertToPHPValueSupportsMicroseconds(DateTimeInterface $expected, string $dbValue): void
     {
-        $type = $this->type();
+        $type = static::type();
 
         $platform = new class extends PostgreSQL100Platform {
             public function getDateTimeFormatString(): string
@@ -87,7 +88,7 @@ abstract class DateTimeTypeTestCaseBase extends TestCase
     }
 
     /** @return Generator<string, array{DateTimeInterface, string}> */
-    public function providerConvertToPHPValueSupportsMicroseconds(): Generator
+    public static function providerConvertToPHPValueSupportsMicroseconds(): Generator
     {
         yield 'timestamp(0)' => [new DateTimeImmutable('2021-12-01 12:34:56.0'), '2021-12-01 12:34:56'];
         yield 'timestamp(3)' => [new DateTimeImmutable('2021-12-01 12:34:56.123'), '2021-12-01 12:34:56.123'];
