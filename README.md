@@ -1,7 +1,6 @@
 # Doctrine UTCDateTimeType
 
 [![GitHub Actions][GA Image]][GA Link]
-[![Shepherd Type][Shepherd Image]][Shepherd Link]
 [![Code Coverage][Coverage Image]][CodeCov Link]
 [![Downloads][Downloads Image]][Packagist Link]
 [![Packagist][Packagist Image]][Packagist Link]
@@ -9,10 +8,6 @@
 [GA Image]: https://github.com/simPod/doctrine-utcdatetime/workflows/CI/badge.svg
 
 [GA Link]: https://github.com/simPod/doctrine-utcdatetime/actions?query=workflow%3A%22CI%22+branch%3Amaster
-
-[Shepherd Image]: https://shepherd.dev/github/simPod/doctrine-utcdatetime/coverage.svg
-
-[Shepherd Link]: https://shepherd.dev/github/simPod/doctrine-utcdatetime
 
 [Coverage Image]: https://codecov.io/gh/simPod/doctrine-utcdatetime/branch/master/graph/badge.svg
 
