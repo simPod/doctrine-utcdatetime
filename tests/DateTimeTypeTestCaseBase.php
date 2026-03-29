@@ -127,5 +127,8 @@ abstract class DateTimeTypeTestCaseBase extends TestCase
         yield 'timestamp(0)' => [new DateTimeImmutable('2021-12-01 12:34:56.0'), '2021-12-01 12:34:56'];
         yield 'timestamp(3)' => [new DateTimeImmutable('2021-12-01 12:34:56.123'), '2021-12-01 12:34:56.123'];
         yield 'timestamp(6)' => [new DateTimeImmutable('2021-12-01 12:34:56.123456'), '2021-12-01 12:34:56.123456'];
+        yield 'timestamptz(0)' => [new DateTimeImmutable('2021-12-01 12:34:56.0+00'), '2021-12-01 12:34:56+00'];
+        yield 'timestamptz(6)' => [new DateTimeImmutable('2021-12-01 12:34:56.123456+00'), '2021-12-01 12:34:56.123456+00'];
+        yield 'timestamptz(0) negative offset' => [new DateTimeImmutable('2021-12-01 12:34:56.0-05'), '2021-12-01 12:34:56-05'];
     }
 }

@@ -14,6 +14,8 @@ use Throwable;
 
 use function is_string;
 use function str_contains;
+use function strrpos;
+use function substr_replace;
 
 final class UTCDateTimeType extends DateTimeType
 {
@@ -47,7 +49,14 @@ final class UTCDateTimeType extends DateTimeType
         $format = $platform->getDateTimeFormatString();
 
         if ($format === 'Y-m-d H:i:s.u' && ! str_contains($value, '.')) {
-            $value .= '.0';
+            $tzPos = strrpos($value, '+');
+            if ($tzPos === false) {
+                $tzPos = strrpos($value, '-', -1);
+            }
+
+            $value = $tzPos !== false && $tzPos > 10
+                ? substr_replace($value, '.0', $tzPos, 0)
+                : $value . '.0';
         }
 
         $dateTime = DateTime::createFromFormat($platform->getDateTimeFormatString(), $value);
