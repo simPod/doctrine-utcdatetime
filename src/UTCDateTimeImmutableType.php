@@ -54,14 +54,14 @@ final class UTCDateTimeImmutableType extends DateTimeImmutableType
             $value .= '.0';
         }
 
-        $dateTime = DateTimeImmutable::createFromFormat($platform->getDateTimeFormatString(), $value);
+        $dateTime = DateTimeImmutable::createFromFormat($platform->getDateTimeFormatString(), $value, self::utc());
 
         if ($dateTime !== false) {
             return $dateTime;
         }
 
         try {
-            return new DateTimeImmutable($value);
+            return new DateTimeImmutable($value, self::utc());
         } catch (Throwable $e) {
             throw InvalidFormat::new(
                 $value,

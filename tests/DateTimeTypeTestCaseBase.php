@@ -89,6 +89,24 @@ abstract class DateTimeTypeTestCaseBase extends TestCase
         $now = static::type() instanceof UTCDateTimeType ? new DateTime() : new DateTimeImmutable();
 
         yield 'DateTime interface' => [$now, $now];
+        yield 'DateTime formatted' => [$now, $now->format('Y-m-d H:i:s.u')];
+    }
+
+    public function testConvertToPHPValueWithDifferentDefaultTimezone(): void {
+        $type = static::type();
+
+        $dbValueUtc = static::type() instanceof UTCDateTimeType
+            ? new DateTime('2026-06-24T12:08:33.0', new \DateTimeZone('UTC'))
+            : new DateTimeImmutable('2026-06-24T12:08:33.0', new \DateTimeZone('UTC'));
+
+        date_default_timezone_set('Europe/Athens');
+        $phpValue = $type->convertToPHPValue($dbValueUtc->format('Y-m-d H:i:s'), $this->platform());
+        date_default_timezone_set('UTC');
+
+        self::assertSame(
+            $dbValueUtc?->format('Y-m-d\TH:i:s.uP'),
+            $phpValue?->format('Y-m-d\TH:i:s.uP'),
+        );
     }
 
     #[DataProvider('providerConvertToPHPValueFailsWithInvalidType')]
