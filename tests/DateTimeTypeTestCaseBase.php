@@ -7,6 +7,7 @@ namespace SimPod\DoctrineUtcDateTime\Tests;
 use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
+use DateTimeZone;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQL100Platform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
@@ -19,6 +20,8 @@ use PHPUnit\Framework\TestCase;
 use SimPod\DoctrineUtcDateTime\UTCDateTimeType;
 
 use function class_exists;
+use function date_default_timezone_get;
+use function date_default_timezone_set;
 
 abstract class DateTimeTypeTestCaseBase extends TestCase
 {
@@ -92,10 +95,13 @@ abstract class DateTimeTypeTestCaseBase extends TestCase
         yield 'DateTime formatted' => [$now, $now->format('Y-m-d H:i:s.u')];
     }
 
-    public function testConvertToPHPValueWithDifferentDefaultTimezone(): void {
+    public function testConvertToPHPValueWithDifferentDefaultTimezone(): void
+    {
+        $type = static::type();
+
         $dbValueUtc = $type instanceof UTCDateTimeType
-            ? new DateTime('2026-06-24T12:08:33.0', new \DateTimeZone('UTC'))
-            : new DateTimeImmutable('2026-06-24T12:08:33.0', new \DateTimeZone('UTC'));
+            ? new DateTime('2026-06-24T12:08:33.0', new DateTimeZone('UTC'))
+            : new DateTimeImmutable('2026-06-24T12:08:33.0', new DateTimeZone('UTC'));
 
         $previousTz = date_default_timezone_get();
         date_default_timezone_set('Europe/Athens');
