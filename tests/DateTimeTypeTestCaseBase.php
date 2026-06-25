@@ -99,9 +99,14 @@ abstract class DateTimeTypeTestCaseBase extends TestCase
             ? new DateTime('2026-06-24T12:08:33.0', new \DateTimeZone('UTC'))
             : new DateTimeImmutable('2026-06-24T12:08:33.0', new \DateTimeZone('UTC'));
 
+        $previousTz = date_default_timezone_get();
         date_default_timezone_set('Europe/Athens');
-        $phpValue = $type->convertToPHPValue($dbValueUtc->format('Y-m-d H:i:s'), $this->platform());
-        date_default_timezone_set('UTC');
+
+        try {
+            $phpValue = $type->convertToPHPValue($dbValueUtc->format('Y-m-d H:i:s'), $this->platform());
+        } finally {
+            date_default_timezone_set($previousTz);
+        }
 
         self::assertSame(
             $dbValueUtc?->format('Y-m-d\TH:i:s.uP'),
