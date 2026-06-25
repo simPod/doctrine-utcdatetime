@@ -93,9 +93,7 @@ abstract class DateTimeTypeTestCaseBase extends TestCase
     }
 
     public function testConvertToPHPValueWithDifferentDefaultTimezone(): void {
-        $type = static::type();
-
-        $dbValueUtc = static::type() instanceof UTCDateTimeType
+        $dbValueUtc = $type instanceof UTCDateTimeType
             ? new DateTime('2026-06-24T12:08:33.0', new \DateTimeZone('UTC'))
             : new DateTimeImmutable('2026-06-24T12:08:33.0', new \DateTimeZone('UTC'));
 
@@ -108,9 +106,11 @@ abstract class DateTimeTypeTestCaseBase extends TestCase
             date_default_timezone_set($previousTz);
         }
 
+        self::assertNotNull($phpValue);
+
         self::assertSame(
-            $dbValueUtc?->format('Y-m-d\TH:i:s.uP'),
-            $phpValue?->format('Y-m-d\TH:i:s.uP'),
+            $dbValueUtc->format('Y-m-d\TH:i:s.uP'),
+            $phpValue->format('Y-m-d\TH:i:s.uP'),
         );
     }
 
