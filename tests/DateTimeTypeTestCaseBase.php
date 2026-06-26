@@ -112,8 +112,6 @@ abstract class DateTimeTypeTestCaseBase extends TestCase
             date_default_timezone_set($previousTz);
         }
 
-        self::assertNotNull($phpValue);
-
         self::assertSame(
             $dbValueUtc->format('Y-m-d\TH:i:s.uP'),
             $phpValue->format('Y-m-d\TH:i:s.uP'),
