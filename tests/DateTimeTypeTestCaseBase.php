@@ -9,7 +9,6 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\PostgreSQL120Platform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\DateTimeImmutableType;
 use Doctrine\DBAL\Types\DateTimeType;
@@ -27,19 +26,28 @@ abstract class DateTimeTypeTestCaseBase extends TestCase
 {
     private function platform(): AbstractPlatform
     {
-        return class_exists('Doctrine\DBAL\Platforms\PostgreSQL120Platform')
-            ? new class extends PostgreSQL120Platform {
-                public function getDateTimeFormatString(): string
-                {
-                    return 'Y-m-d H:i:s.u';
-                }
-            }
-            : new class extends PostgreSQLPlatform {
+        if (class_exists('Doctrine\DBAL\Platforms\PostgreSQL120Platform')) {
+            return new class extends \Doctrine\DBAL\Platforms\PostgreSQL120Platform {
                 public function getDateTimeFormatString(): string
                 {
                     return 'Y-m-d H:i:s.u';
                 }
             };
+        } elseif (class_exists('Doctrine\DBAL\Platforms\PostgreSQL100Platform')) { // for doctrine/dbal 3.0.0
+            return new class extends \Doctrine\DBAL\Platforms\PostgreSQL100Platform {
+                public function getDateTimeFormatString(): string
+                {
+                    return 'Y-m-d H:i:s.u';
+                }
+            };
+        } else {
+            return new class extends PostgreSQLPlatform {
+                public function getDateTimeFormatString(): string
+                {
+                    return 'Y-m-d H:i:s.u';
+                }
+            };
+        }
     }
 
     abstract protected static function type(): DateTimeImmutableType|DateTimeType;

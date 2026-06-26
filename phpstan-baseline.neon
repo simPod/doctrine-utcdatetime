@@ -1,1 +1,8 @@
 parameters:
+	ignoreErrors:
+		-
+			message: '#^Method SimPod\\DoctrineUtcDateTime\\Tests\\DateTimeTypeTestCaseBase\:\:platform\(\) should return Doctrine\\DBAL\\Platforms\\AbstractPlatform but returns Doctrine\\DBAL\\Platforms\\PostgreSQL100Platform@anonymous/tests/DateTimeTypeTestCaseBase\.php\:37\.$#'
+			identifier: return.type
+			count: 1
+			path: tests/DateTimeTypeTestCaseBase.php
+
