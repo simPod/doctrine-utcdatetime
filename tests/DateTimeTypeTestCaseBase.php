@@ -7,8 +7,8 @@ namespace SimPod\DoctrineUtcDateTime\Tests;
 use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
+use DateTimeZone;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\PostgreSQL100Platform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\DateTimeImmutableType;
 use Doctrine\DBAL\Types\DateTimeType;
@@ -19,24 +19,37 @@ use PHPUnit\Framework\TestCase;
 use SimPod\DoctrineUtcDateTime\UTCDateTimeType;
 
 use function class_exists;
+use function date_default_timezone_get;
+use function date_default_timezone_set;
 
 abstract class DateTimeTypeTestCaseBase extends TestCase
 {
     private function platform(): AbstractPlatform
     {
-        return class_exists('Doctrine\DBAL\Platforms\PostgreSQL100Platform')
-            ? new class extends PostgreSQL100Platform {
-                public function getDateTimeFormatString(): string
-                {
-                    return 'Y-m-d H:i:s.u';
-                }
-            }
-            : new class extends PostgreSQLPlatform {
+        if (class_exists('Doctrine\DBAL\Platforms\PostgreSQL120Platform')) {
+            // phpcs:ignore SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly.ReferenceViaFullyQualifiedName,SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing.IncorrectLinesCountBeforeFirstControlStructure
+            return new class extends \Doctrine\DBAL\Platforms\PostgreSQL120Platform {
                 public function getDateTimeFormatString(): string
                 {
                     return 'Y-m-d H:i:s.u';
                 }
             };
+        } elseif (class_exists('Doctrine\DBAL\Platforms\PostgreSQL100Platform')) { // for doctrine/dbal 3.0.0
+            // phpcs:ignore SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly.ReferenceViaFullyQualifiedName,SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing.IncorrectLinesCountBeforeFirstControlStructure -- @phpstan-ignore return.type
+            return new class extends \Doctrine\DBAL\Platforms\PostgreSQL100Platform {
+                public function getDateTimeFormatString(): string
+                {
+                    return 'Y-m-d H:i:s.u';
+                }
+            };
+        } else {
+            return new class extends PostgreSQLPlatform {
+                public function getDateTimeFormatString(): string
+                {
+                    return 'Y-m-d H:i:s.u';
+                }
+            };
+        }
     }
 
     abstract protected static function type(): DateTimeImmutableType|DateTimeType;
@@ -89,6 +102,37 @@ abstract class DateTimeTypeTestCaseBase extends TestCase
         $now = static::type() instanceof UTCDateTimeType ? new DateTime() : new DateTimeImmutable();
 
         yield 'DateTime interface' => [$now, $now];
+        yield 'DateTime formatted' => [$now, $now->format('Y-m-d H:i:s.u')];
+
+        $fallbackValue    = '2026-06-24T12:08:33';
+        $fallbackDateTime = static::type() instanceof UTCDateTimeType
+            ? new DateTime($fallbackValue, new DateTimeZone('UTC'))
+            : new DateTimeImmutable($fallbackValue, new DateTimeZone('UTC'));
+
+        yield 'DateTime constructor formatted' => [$fallbackDateTime, $fallbackValue];
+    }
+
+    public function testConvertToPHPValueWithDifferentDefaultTimezone(): void
+    {
+        $type = static::type();
+
+        $dbValueUtc = $type instanceof UTCDateTimeType
+            ? new DateTime('2026-06-24T12:08:33.0', new DateTimeZone('UTC'))
+            : new DateTimeImmutable('2026-06-24T12:08:33.0', new DateTimeZone('UTC'));
+
+        $previousTz = date_default_timezone_get();
+        date_default_timezone_set('Europe/Athens');
+
+        try {
+            $phpValue = $type->convertToPHPValue($dbValueUtc->format('Y-m-d H:i:s'), $this->platform());
+        } finally {
+            date_default_timezone_set($previousTz);
+        }
+
+        self::assertSame(
+            $dbValueUtc->format('Y-m-d\TH:i:s.uP'),
+            $phpValue->format('Y-m-d\TH:i:s.uP'),
+        );
     }
 
     #[DataProvider('providerConvertToPHPValueFailsWithInvalidType')]

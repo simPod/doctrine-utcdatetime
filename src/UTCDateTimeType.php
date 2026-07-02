@@ -50,14 +50,14 @@ final class UTCDateTimeType extends DateTimeType
             $value .= '.0';
         }
 
-        $dateTime = DateTime::createFromFormat($platform->getDateTimeFormatString(), $value);
+        $dateTime = DateTime::createFromFormat($platform->getDateTimeFormatString(), $value, self::utc());
 
         if ($dateTime !== false) {
             return $dateTime;
         }
 
         try {
-            return new DateTime($value);
+            return new DateTime($value, self::utc());
         } catch (Throwable $e) {
             throw InvalidFormat::new(
                 $value,

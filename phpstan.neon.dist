@@ -3,6 +3,3 @@ parameters:
     paths:
         - %currentWorkingDirectory%/src
         - %currentWorkingDirectory%/tests
-
-includes:
-    - %currentWorkingDirectory%/phpstan-baseline.neon
