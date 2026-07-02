@@ -27,6 +27,7 @@ abstract class DateTimeTypeTestCaseBase extends TestCase
     private function platform(): AbstractPlatform
     {
         if (class_exists('Doctrine\DBAL\Platforms\PostgreSQL120Platform')) {
+            // phpcs:ignore SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly.ReferenceViaFullyQualifiedName,SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing.IncorrectLinesCountBeforeFirstControlStructure
             return new class extends \Doctrine\DBAL\Platforms\PostgreSQL120Platform {
                 public function getDateTimeFormatString(): string
                 {
@@ -34,6 +35,7 @@ abstract class DateTimeTypeTestCaseBase extends TestCase
                 }
             };
         } elseif (class_exists('Doctrine\DBAL\Platforms\PostgreSQL100Platform')) { // for doctrine/dbal 3.0.0
+            // phpcs:ignore SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly.ReferenceViaFullyQualifiedName,SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing.IncorrectLinesCountBeforeFirstControlStructure
             return new class extends \Doctrine\DBAL\Platforms\PostgreSQL100Platform {
                 public function getDateTimeFormatString(): string
                 {
