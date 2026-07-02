@@ -5,3 +5,4 @@
 /.phpcs-cache
 /phpstan.neon
 .phpunit.result.cache
+/.phpunit.cache/
