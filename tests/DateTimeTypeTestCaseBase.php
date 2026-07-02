@@ -103,6 +103,13 @@ abstract class DateTimeTypeTestCaseBase extends TestCase
 
         yield 'DateTime interface' => [$now, $now];
         yield 'DateTime formatted' => [$now, $now->format('Y-m-d H:i:s.u')];
+
+        $fallbackValue    = '2026-06-24T12:08:33';
+        $fallbackDateTime = static::type() instanceof UTCDateTimeType
+            ? new DateTime($fallbackValue, new DateTimeZone('UTC'))
+            : new DateTimeImmutable($fallbackValue, new DateTimeZone('UTC'));
+
+        yield 'DateTime constructor formatted' => [$fallbackDateTime, $fallbackValue];
     }
 
     public function testConvertToPHPValueWithDifferentDefaultTimezone(): void
